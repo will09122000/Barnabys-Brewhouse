@@ -1,0 +1,42 @@
+[
+  {
+    "timestamp": "20:39:19 2019-12-04",
+    "beer_type": "Red Helles",
+    "gyle_number": "265",
+    "quantity": 600.0,
+    "tank_preference": "None",
+    "current_phase": "Fermentation"
+  },
+  {
+    "timestamp": "20:39:36 2019-12-04",
+    "beer_type": "Pilsner",
+    "gyle_number": "266",
+    "quantity": 400.0,
+    "tank_preference": "None",
+    "current_phase": "Conditioning and Carbonation"
+  },
+  {
+    "timestamp": "20:39:49 2019-12-04",
+    "beer_type": "Red Helles",
+    "gyle_number": "267",
+    "quantity": 200.0,
+    "tank_preference": "None",
+    "current_phase": "Bottling and Labelling"
+  },
+  {
+    "timestamp": "20:39:59 2019-12-04",
+    "beer_type": "Dunkel",
+    "gyle_number": "268",
+    "quantity": 650.0,
+    "tank_preference": "None",
+    "current_phase": "Hot Brew in kettle"
+  },
+  {
+    "timestamp": "20:41:02 2019-12-04",
+    "beer_type": "Pilsner",
+    "gyle_number": "269",
+    "quantity": 200.0,
+    "tank_preference": "None",
+    "current_phase": "Fermentation"
+  }
+]

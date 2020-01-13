@@ -1,0 +1,14 @@
+[
+  {
+    "beer_type": "Red Helles",
+    "quantity": 300
+  },
+  {
+    "beer_type": "Pilsner",
+    "quantity": 1000
+  },
+  {
+    "beer_type": "Dunkel",
+    "quantity": 400
+  }
+]

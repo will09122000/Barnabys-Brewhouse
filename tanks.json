@@ -1,0 +1,95 @@
+[
+  {
+    "name": "Albert",
+    "volume": 1000,
+    "fermenter": true,
+    "conditioner": true,
+    "available": false,
+    "batch": {
+      "timestamp": "20:41:02 2019-12-04",
+      "beer_type": "Pilsner",
+      "gyle_number": "269",
+      "quantity": 200.0,
+      "tank_preference": "None",
+      "current_phase": "Fermentation"
+    }
+  },
+  {
+    "name": "Brigadier",
+    "volume": 800,
+    "fermenter": true,
+    "conditioner": true,
+    "available": false,
+    "batch": {
+      "timestamp": "20:39:19 2019-12-04",
+      "beer_type": "Red Helles",
+      "gyle_number": "265",
+      "quantity": 600.0,
+      "tank_preference": "None",
+      "current_phase": "Fermentation"
+    }
+  },
+  {
+    "name": "Camilla",
+    "volume": 1000,
+    "fermenter": true,
+    "conditioner": true,
+    "available": false,
+    "batch": {
+      "timestamp": "20:39:36 2019-12-04",
+      "beer_type": "Pilsner",
+      "gyle_number": "266",
+      "quantity": 400.0,
+      "tank_preference": "None",
+      "current_phase": "Conditioning and Carbonation"
+    }
+  },
+  {
+    "name": "Dylon",
+    "volume": 800,
+    "fermenter": true,
+    "conditioner": true,
+    "available": true,
+    "batch": {}
+  },
+  {
+    "name": "Emily",
+    "volume": 1000,
+    "fermenter": true,
+    "conditioner": true,
+    "available": true,
+    "batch": {}
+  },
+  {
+    "name": "Florence",
+    "volume": 800,
+    "fermenter": true,
+    "conditioner": true,
+    "available": true,
+    "batch": {}
+  },
+  {
+    "name": "Gertrude",
+    "volume": 680,
+    "fermenter": false,
+    "conditioner": true,
+    "available": true,
+    "batch": {}
+  },
+  {
+    "name": "Harry",
+    "volume": 680,
+    "fermenter": false,
+    "conditioner": true,
+    "available": true,
+    "batch": {}
+  },
+  {
+    "name": "R2D2",
+    "volume": 800,
+    "fermenter": true,
+    "conditioner": false,
+    "available": true,
+    "batch": {}
+  }
+]
