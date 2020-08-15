@@ -2430,3 +2430,7 @@ INFO: 2019-12-04 20:41:07,475 Batch: 269 has started a new phase
 INFO: 2019-12-04 20:41:07,476 127.0.0.1 - - [04/Dec/2019 20:41:07] "GET /next-phase?gyle_number=269 HTTP/1.1" 302 -
 INFO: 2019-12-04 20:41:07,518 127.0.0.1 - - [04/Dec/2019 20:41:07] "GET / HTTP/1.1" 200 -
 INFO: 2019-12-04 21:05:36,025  * Detected change in 'C:\\Users\\Will Coates\\source\\repos\\Barnabys Brewhouse\\barnabys_brewhouse.py', reloading
+INFO: 2020-08-15 10:49:48,164 New Customer Order: {'timestamp': '10:49:48 2020-08-15', 'beer_type': 'Red Helles', 'quantity': 200.0, 'date_required': '2020-08-29'}
+INFO: 2020-08-15 10:49:48,164 127.0.0.1 - - [15/Aug/2020 10:49:48] "[32mGET /add-new-order?beer_type=Red+Helles&quantity=200&date_required=2020-08-29 HTTP/1.1[0m" 302 -
+INFO: 2020-08-15 10:49:48,200 127.0.0.1 - - [15/Aug/2020 10:49:48] "[37mGET / HTTP/1.1[0m" 200 -
+INFO: 2020-08-15 10:49:48,306 127.0.0.1 - - [15/Aug/2020 10:49:48] "[37mGET / HTTP/1.1[0m" 200 -

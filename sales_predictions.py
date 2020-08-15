@@ -97,7 +97,10 @@ def predictions(growth: float, bottles_sold: dict, ratio: list):
     date_formatted = date_past.strftime('%b') + '-' + \
     date_past.strftime('%y')
 
-    total_bottles = (bottles_sold[date_formatted] * (1 + growth))
+    try:
+        total_bottles = (bottles_sold[date_formatted] * (1 + growth))
+    except:
+        total_bottles = 0
     # Month and year the preducted volumes are required.
     month_required = [data_future.strftime('%B') + ' ' + \
     data_future.strftime('%Y'), date_past.strftime('%B') + ' ' + \

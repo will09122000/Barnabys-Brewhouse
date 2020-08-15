@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "timestamp": "10:49:48 2020-08-15",
+    "beer_type": "Red Helles",
+    "quantity": 200.0,
+    "date_required": "2020-08-29"
+  }
+]

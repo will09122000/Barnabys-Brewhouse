@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<head>
+    <title>Barnaby's Brewhouse</title>
+    <!--Most CSS styling is inside html elements as I couldn't get the external style sheet to work properly.-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<img src="https://cdn.discordapp.com/attachments/447471658551476264/647920357826756612/barnabys-brewhouse-header-logo.jpg"
+     style="height: 5%; width: 5%;">
+
+<h1 style="font-size:200%; font-family:Verdana">Barnaby's Brewhouse</h1>
+<body>
+    <div id="contentBox" style="margin:0px auto; width:100%;">
+        <div id="column1" style="float:left; margin:0; width:33%">
+            <h2 style="text-align: center;">Update System</h2>
+            <div style="border-style: solid; border-color: rgb(189, 189, 189); padding: 5px;">
+                <h3>Upload Sales Data</h3>
+                <!--Form to allow the user to add news sales data.-->
+                <form action="./add-sales-data" method="post" enctype="multipart/form-data">
+                    Select .csv file to upload: <br>
+                    <input type="file" name="sales_file"/> <br> <br>
+                    <input type="submit" value="Upload">
+                </form>
+                {{success}}
+            </div>
+            <div style="border-style: solid; border-color: rgb(189, 189, 189); padding: 5px;">
+                <h3>Upload New Batch</h3>
+                <!--Form to allow the user to add a new batch.-->
+                <form action="./add-new-batch" method="get">
+                    <table>
+                        <tr>
+                            <td>Beer Type:</td>
+                            <td>
+                                <select name="beer_type" style="width:50%">
+                                    <option value="Red Helles">Red Helles</option>
+                                    <option value="Pilsner">Pilsner</option>
+                                    <option value="Dunkel">Dunkel</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gyle Number:</td>
+                            <td><input style="width:50%" style="display: block;" type="number"
+                                       name="gyle_number" placeholder="201" width="100%" required></td>
+                        </tr>
+                        <tr>
+                            <td>Quantity (litres):</td>
+                            <td><input style="width:50%" type="number" name="quantity"
+                                       placeholder="500" min="1" max="1000" step=".10" required></td>
+                        </tr>
+                        <tr>
+                            <td>Tank Preference:</td>
+                            <td>
+                            <select style="width:50%" name="tank_preference">
+                                <option value="None">None</option>
+                                <option value="Albert">Albert (1000L Capacity, Fermenter, Conditioner)</option>
+                                <option value="Brigadier">Brigadier (800L Capacity, Fermenter, Conditioner)</option>
+                                <option value="Camilla">Camilla (1000L Capacity, Fermenter, Conditioner)</option>
+                                <option value="Dylon">Dylon (800L Capacity, Fermenter, Conditioner)</option>
+                                <option value="Emily">Emily (1000L Capacity, Fermenter, Conditioner)</option>
+                                <option value="Florence">Florence (800L Capacity, Fermenter, Conditioner)</option>
+                                <option value="Gertrude">Gertrude (680L Capacity, Conditioner)</option>
+                                <option value="Harry">Harry (680L Capacity, Conditioner)</option>
+                                <option value="R2D2">R2D2 (800L Capacity, Fermenter)</option>
+                            </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Upload Batch">
+                </form>
+            </div>
+            <div style="border-style: solid; border-color: rgb(189, 189, 189); padding: 5px;">
+                <h3>Batches</h3>
+                <!--Displays a table of all batches currently being processed.-->
+                {% if batches %}
+                    <table style="border: 2px solid white;
+                    background-color: rgb(29, 29, 29); border-collapse: collapse;">
+                        <tr>
+                            <th style="border: 1px solid white;">Batch Uploaded</th>
+                            <th style="border: 1px solid white;">Beer Type</th>
+                            <th style="border: 1px solid white;">Gyle Number</th>
+                            <th style="border: 1px solid white;">Quantity (L)</th>
+                            <th style="border: 1px solid white;">Tank Preference</th>
+                            <th style="border: 1px solid white;">Current Phase</th>
+                        </tr>
+                        {% for batch in batches %}
+                            <tr>
+                                <td style="border: 1px solid white;">{{batch['timestamp']}}</td>
+                                <td style="border: 1px solid white;">{{batch['beer_type']}}</td>
+                                <td style="border: 1px solid white;">{{batch['gyle_number']}}</td>
+                                <td style="border: 1px solid white;">{{batch['quantity']}}</td>
+                                <td style="border: 1px solid white;">{{batch['tank_preference']}}</td>
+                                <td style="border: 1px solid white;">
+                                    {% if batch['current_phase'] == 'Hot Brew in kettle' %}
+                                    <form action="./next-phase" method="get">
+                                        <input type="hidden" value="{{batch['gyle_number']}}" name="gyle_number">
+                                        <input style="white-space: normal; background-color: #70AE98;"
+                                               type="submit" value="Finish {{batch['current_phase']}}, Start Fermentation">
+                                    </form>
+                                    {% elif batch['current_phase'] == 'Fermentation' %}
+                                        <form action="./next-phase" method="get">
+                                            <input type="hidden" value="{{batch['gyle_number']}}" name="gyle_number">
+                                            <input style="white-space: normal; background-color: #ECBE7A;"
+                                                   type="submit" type="submit"
+                                                   value="Finish {{batch['current_phase']}}, Start Conditioning and Carbonation">
+                                        </form>
+                                    {% elif batch['current_phase'] == 'Conditioning and Carbonation' %}
+                                        <form action="./next-phase" method="get">
+                                            <input type="hidden" value="{{batch['gyle_number']}}" name="gyle_number">
+                                            <input style="white-space: normal; background-color: #E58B88;"
+                                                   type="submit" type="submit"
+                                                   value="Finish {{batch['current_phase']}}, Start bottling and labelling">
+                                        </form>
+                                    {% else %}
+                                        <form action="./next-phase" method="get">
+                                            <input type="hidden" value="{{batch['gyle_number']}}" name="gyle_number">
+                                            <input style="white-space: normal; background-color: #9DABDD;"
+                                                   type="submit" type="submit"
+                                                   value="Finish {{batch['current_phase']}}, Complete Batch">
+                                        </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                None
+                {% endif %}
+            </div>
+            <div style="border-style: solid; border-color: rgb(189, 189, 189); padding: 5px;">
+                <h3>Upload New Customer Order</h3>
+                <!--Form to allow the user to add new customer orders.-->
+                <form action="./add-new-order" method="get">
+                    <table>
+                        <tr>
+                            <td>Beer Type:</td>
+                                <td>
+                                <select style="width:80%" name="beer_type">
+                                    <option value="Red Helles">Red Helles</option>
+                                    <option value="Pilsner">Pilsner</option>
+                                    <option value="Dunkel">Dunkel</option>
+                                </select>
+                                </td>
+                        </tr>
+                        <tr>
+                            <td>Quantity (bottles):</td>
+                            <td><input style="width:80%" type="number" name="quantity"
+                                       placeholder="500" min="1" step="1" required></td>
+                        </tr>
+                        <tr>
+                            <td>Date Required:</td>
+                            <td><input style="width:80%" type="date"
+                                       name="date_required" min="{{today}}"></td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Upload Order">
+                </form> 
+            </div>
+            <div style="border-style: solid;
+            border-color: rgb(189, 189, 189); padding: 5px;">
+                <h3>Customer Orders</h3>
+                <!--Table displays all customer orders currently being processed.-->
+                {% if orders %}
+                    <table style="border: 2px solid white;
+                    background-color: rgb(29, 29, 29); border-collapse: collapse;">
+                        <tr>
+                            <th style="border: 1px solid white;">Order Uploaded</th>
+                            <th style="border: 1px solid white;">Beer Type</th>
+                            <th style="border: 1px solid white;">Quantity (Bottles)</th>
+                            <th style="border: 1px solid white;">Date Required</th>
+                            <th style="border: 1px solid white;">Dispatch</th>
+                        </tr>
+                    {% for order in orders %}
+                        <tr>
+                            <td style="border: 1px solid white;">{{order['timestamp']}}</td>
+                            <td style="border: 1px solid white;">{{order['beer_type']}}</td>
+                            <td style="border: 1px solid white;">{{order['quantity']}}</td>
+                            <td style="border: 1px solid white;">{{order['date_required']}}</td>
+                            <td style="border: 1px solid white;">
+                                <form method="get" action="./dispatch-order">
+                                <input type="hidden"
+                                       value="{{order['timestamp']}}" name="timestamp">
+                                <input type="hidden" 
+                                       value="{{order['beer_type']}}" name="beer_type">
+                                {% for beer in inventory %}
+                                    {% if beer['beer_type'] == order['beer_type'] %}
+                                        {% if beer['quantity'] >= order['quantity'] %}
+                                            <input type="submit" value="Dispatch">
+                                        {% else %}
+                                            <input type="submit" value="Dispatch" disabled>
+                                        {% endif %}   
+                                    {% endif %}
+                                {% endfor %}
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    None
+                {% endif %}
+                </table>
+            </div>
+        </div>
+
+        <div id="column2" style="float:left; margin:0; width:33%;">
+            <h2 style="text-align: center;">Production Management</h2>
+            <div style="border-style: solid; border-color: rgb(189, 189, 189); padding: 5px;">
+                <h3>Current Inventory</h3>
+                <!--Displays the current inventory in bottles for each beer type-->
+                {% for beer in inventory %}
+                    {{beer['beer_type']}}: {{beer['quantity']}} bottles <br> <br>
+                {% endfor %}
+            </div>
+            <div style="border-style: solid; border-color: rgb(189, 189, 189); padding: 5px;">
+                <h3>Update Stock Manually</h3>
+                <form action="./update-stock" method="get">
+                    <table>
+                        <tr>
+                            <td>Beer Type:</td>
+                            <td>
+                                <select style="width:80%" name="beer_type">
+                                    <option value="Red Helles">Red Helles</option>
+                                    <option value="Pilsner">Pilsner</option>
+                                    <option value="Dunkel">Dunkel</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Quantity (bottles):</td>
+                            <td><input style="width:80%" type="number"
+                                       name="new_quantity" required></td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Update">
+                </form>
+            </div>
+            <div style="border-style: solid; border-color: rgb(189, 189, 189); padding: 5px;">
+                <h3>Tank Status</h3>
+                <!--Displays details of each tank including details of the batch if the
+                    tank has a batch inside-->
+                {% for tank in tank_status %}
+                    {% if tank['batch']['gyle_number']%}
+                        <h4>{{tank['name']}}:</h4>
+                        Beer: {{tank['batch']['beer_type']}} <br>
+                        Gyle Number: {{tank['batch']['gyle_number']}} <br>
+                        Current Phase: {{tank['batch']['current_phase']}} <br>
+                        Quantity: {{tank['batch']['quantity']}}L <br>
+                        <progress value={{tank['batch']['quantity']}}
+                                  max={{tank['volume']}}> </progress>
+                        {{tank['batch']['quantity'] / tank['volume'] * 100}}% full<br> <br>
+                    <br>
+                    {% else %}
+                        <b>{{tank['name']}}:</b>
+                        Empty <br> <br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div id="column3" style="float:left; margin:0; width:33%;">
+            <h2 style="text-align: center;">Predictions</h2>
+            <div style="border-style: solid; border-color: rgb(189, 189, 189); padding: 5px;">
+                <h3>Recommended Beer to Brew Next:</h3>
+                <!--Displays a recommendation on the next beer type to brew along with reasons
+                    as to why that beer should be brewed next.-->
+                <h4>{{next_beer}}</h4>
+                Reasons: <br>
+                <ul>
+                    {% if inventory_reason %}
+                        <li> {{inventory_reason}} </li>
+                    {% endif %}
+                    {% if batch_reason %}
+                        <li> {{batch_reason}} </li>
+                    {% endif %}
+                    {% if ratio_reason %}
+                        <li> {{ratio_reason}} </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div style="border-style: solid; border-color: rgb(189, 189, 189); padding: 5px;">
+                <!--Displays the estimated quantity of each beer type along with the volume at the
+                    same time last year.-->
+                <h3>Estimated quantity required in {{month_required[0]}}:</h3>
+                Red Helles: <b>{{rh_volume}}L</b> <br>
+                Pilsner: <b>{{p_volume}}L</b> <br>
+                Dunkel: <b>{{d_volume}}L</b> <br>
+                <h3>Quantity required in {{month_required[1]}}:</h3>
+                Red Helles: {{rh_vol_evidence}}L <br>
+                Pilsner: {{p_vol_evidence}}L <br>
+                Dunkel: {{d_vol_evidence}}L <br>
+            </div>
+            <div style="border-style: solid; border-color: rgb(189, 189, 189); padding: 5px;">
+                <h3>Data used for estimated quantity</h3>
+                <table style="border: 2px solid white;
+                              background-color: rgb(29, 29, 29); border-collapse: collapse;">
+                    <tr>
+                        <th style="border: 1px solid white;">Invoice Number</th>
+                        <th style="border: 1px solid white;">Customer</th>
+                        <th style="border: 1px solid white;">Date Requried</th>
+                        <th style="border: 1px solid white;">Recipe</th>
+                        <th style="border: 1px solid white;">Gyle Number</th>
+                        <th style="border: 1px solid white;">Quantity Order</th>
+                    </tr>
+                    {% for sale in data_evidence %}
+                        <tr>
+                            <td style="border: 1px solid white;">{{sale[0]}}</td>
+                            <td style="border: 1px solid white;">{{sale[1]}}</td>
+                            <td style="border: 1px solid white;">{{sale[2]}}</td>
+                            <td style="border: 1px solid white;">{{sale[3]}}</td>
+                            <td style="border: 1px solid white;">{{sale[4]}}</td>
+                            <td style="border: 1px solid white;">{{sale[5]}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</body>

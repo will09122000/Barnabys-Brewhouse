@@ -1,0 +1,35 @@
+body {
+    background-color: #515151;
+    color: #FFFFFF;
+    font-family: Verdana;
+}
+
+h1 {
+    color: #FFFFFF;
+    text-align: center;
+    font-family: Verdana;
+    font-size: 150%;
+}
+
+h2 {
+    color: #FFFFFF;
+    text-align: left;
+    font-family: Verdana;
+}
+
+p {
+    color: #FFFFFF;
+    text-align: center;
+    font-family: Verdana;
+}
+
+img {
+    height: 5%;
+    width: 5%;
+}
+
+progress[value] {
+    width: 250px;
+    height: 20px;
+    background: black;
+  }
